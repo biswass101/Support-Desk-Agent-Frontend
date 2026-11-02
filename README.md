@@ -173,8 +173,10 @@ Support-Desk-Agent-Frontend/
 1. Install project dependencies:
    ```bash
    cd Support-Desk-Agent-Frontend
-   npm install
+   npm install --legacy-peer-deps
    ```
+   > [!NOTE]
+   > Next.js 15 leverages React 19. Due to strict peer dependency resolution in npm 7+, running standard `npm install` may produce an `ERESOLVE` peer dependency conflict with certain UI packages. Use `npm install --legacy-peer-deps` (recommended) or `npm install --force` to install cleanly.
 
 2. Configure environment variables:
    Create a `.env.local` file based on `.env.example`:
@@ -219,7 +221,7 @@ Backend will start on `http://localhost:5000`. Swagger API documentation is avai
 ### Terminal 2: Frontend
 ```bash
 cd Support-Desk-Agent-Frontend
-npm install
+npm install --legacy-peer-deps
 npm run dev
 ```
 Frontend will start on `http://localhost:3000`.
