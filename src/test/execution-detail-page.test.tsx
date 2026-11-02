@@ -13,6 +13,10 @@ vi.mock('@/features/agent/hooks/use-executions', () => ({
   useExecutionDetail: vi.fn(),
 }));
 
+vi.mock('@/components/layout/dashboard-shell', () => ({
+  DashboardShell: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+}));
+
 describe('ExecutionDetailPage Component', () => {
   const mockExecution: AgentExecution = {
     id: 'exec-12345678',

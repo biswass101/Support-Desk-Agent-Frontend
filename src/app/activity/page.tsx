@@ -24,6 +24,7 @@ import { ResolutionTagBadge } from '@/features/agent/components/resolution-tag-b
 import { useAllExecutions } from '@/features/agent/hooks/use-executions';
 import { cn } from '@/lib/utils';
 import { ExecutionStatus, ResolutionTag } from '@/types';
+import { DashboardShell } from '@/components/layout/dashboard-shell';
 
 export default function ActivityPage() {
   const { data: executions = [], isLoading, isError, refetch, isFetching } = useAllExecutions();
@@ -81,7 +82,11 @@ export default function ActivityPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <DashboardShell
+      title="Agent Activity & Audit Trail"
+      breadcrumbs={[{ label: 'Agent Activity' }]}
+    >
+      <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
@@ -342,5 +347,6 @@ export default function ActivityPage() {
         </CardContent>
       </Card>
     </div>
+    </DashboardShell>
   );
 }

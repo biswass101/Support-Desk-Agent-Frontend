@@ -11,6 +11,7 @@ import { useExecutionDetail } from '@/features/agent/hooks/use-executions';
 import { AgentResultCard } from '@/features/agent/components/agent-result-card';
 import { ExecutionTraceTimeline } from '@/features/agent/components/execution-trace-timeline';
 import { TicketStatusBadge } from '@/features/tickets/components/ticket-status-badge';
+import { DashboardShell } from '@/components/layout/dashboard-shell';
 import { cn } from '@/lib/utils';
 
 export default function ExecutionDetailPage() {
@@ -21,41 +22,64 @@ export default function ExecutionDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-8 w-24" />
-          <Skeleton className="h-8 w-48" />
+      <DashboardShell
+        title={`Audit #${executionId.slice(0, 8)}`}
+        breadcrumbs={[
+          { label: 'Agent Activity', href: '/activity' },
+          { label: `Audit #${executionId.slice(0, 8)}` },
+        ]}
+      >
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-8 w-24" />
+            <Skeleton className="h-8 w-48" />
+          </div>
+          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-60 w-full" />
         </div>
-        <Skeleton className="h-40 w-full" />
-        <Skeleton className="h-60 w-full" />
-      </div>
+      </DashboardShell>
     );
   }
 
   if (isError || !execution) {
     return (
-      <Card className="border-destructive/30 bg-destructive/5 p-8 text-center space-y-3">
-        <h3 className="font-semibold text-lg text-foreground">Execution Not Found</h3>
-        <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-          Unable to locate execution record with ID &apos;{executionId}&apos;.
-        </p>
-        <div className="flex justify-center gap-3 pt-2">
-          <Link
-            href="/activity"
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
-          >
-            Back to Agent Activity
-          </Link>
-          <Button size="sm" onClick={() => refetch()}>
-            Retry
-          </Button>
-        </div>
-      </Card>
+      <DashboardShell
+        title="Execution Audit"
+        breadcrumbs={[
+          { label: 'Agent Activity', href: '/activity' },
+          { label: 'Not Found' },
+        ]}
+      >
+        <Card className="border-destructive/30 bg-destructive/5 p-8 text-center space-y-3">
+          <h3 className="font-semibold text-lg text-foreground">Execution Not Found</h3>
+          <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+            Unable to locate execution record with ID &apos;{executionId}&apos;.
+          </p>
+          <div className="flex justify-center gap-3 pt-2">
+            <Link
+              href="/activity"
+              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+            >
+              Back to Agent Activity
+            </Link>
+            <Button size="sm" onClick={() => refetch()}>
+              Retry
+            </Button>
+          </div>
+        </Card>
+      </DashboardShell>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <DashboardShell
+      title={`Audit #${executionId.slice(0, 8)}`}
+      breadcrumbs={[
+        { label: 'Agent Activity', href: '/activity' },
+        { label: `Audit #${executionId.slice(0, 8)}` },
+      ]}
+    >
+      <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b">
         <div className="flex items-center gap-3">
           <Link
@@ -148,6 +172,7 @@ export default function ExecutionDetailPage() {
         />
       )}
     </div>
+    </DashboardShell>
   );
 }
 

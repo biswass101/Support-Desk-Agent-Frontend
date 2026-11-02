@@ -25,6 +25,7 @@ import {
   useReseedDatabase,
   useClearAllData,
 } from '@/features/settings/hooks/use-settings';
+import { DashboardShell } from '@/components/layout/dashboard-shell';
 
 export default function SettingsPage() {
   const { data: systemInfo, isLoading, isError, refetch } = useSystemInfo();
@@ -49,7 +50,11 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <DashboardShell
+      title="System Settings"
+      breadcrumbs={[{ label: 'Settings' }]}
+    >
+      <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
@@ -309,5 +314,6 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
     </div>
+    </DashboardShell>
   );
 }

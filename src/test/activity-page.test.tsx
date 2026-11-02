@@ -9,6 +9,10 @@ vi.mock('@/features/agent/hooks/use-executions', () => ({
   useAllExecutions: vi.fn(),
 }));
 
+vi.mock('@/components/layout/dashboard-shell', () => ({
+  DashboardShell: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+}));
+
 describe('ActivityPage Component', () => {
   const mockExecutions: AgentExecution[] = [
     {

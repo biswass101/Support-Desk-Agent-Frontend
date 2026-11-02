@@ -50,8 +50,8 @@ export function Sidebar() {
   const { data: health, isLoading: healthLoading, isError: healthError } = useHealth();
 
   return (
-    <aside className="hidden h-screen w-64 flex-col border-r bg-card/60 backdrop-blur-md lg:flex">
-      <div className="flex h-16 items-center gap-3 border-b px-6">
+    <aside className="hidden sticky top-0 h-screen w-64 flex-col border-r bg-card/60 backdrop-blur-md lg:flex shrink-0 overflow-y-auto">
+      <div className="flex h-16 items-center gap-3 border-b px-6 shrink-0">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
           <Bot className="h-6 w-6" />
         </div>
@@ -105,7 +105,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t p-4">
+      <div className="shrink-0 border-t p-4">
         <div className="rounded-xl border bg-muted/30 p-3.5 space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">

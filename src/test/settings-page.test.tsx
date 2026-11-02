@@ -11,6 +11,10 @@ vi.mock('@/features/settings/hooks/use-settings', () => ({
   useClearAllData: vi.fn(),
 }));
 
+vi.mock('@/components/layout/dashboard-shell', () => ({
+  DashboardShell: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+}));
+
 describe('SettingsPage Component', () => {
   const mockSystemInfo = {
     status: 'healthy',
