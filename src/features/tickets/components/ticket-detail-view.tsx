@@ -20,6 +20,7 @@ import { CustomerInfoCard } from './customer-info-card';
 import { OrderInfoCard } from './order-info-card';
 import { AgentActionBar } from './agent-action-bar';
 import { AgentResultCard } from '@/features/agent/components/agent-result-card';
+import { ExecutionTraceTimeline } from '@/features/agent/components/execution-trace-timeline';
 import { AgentExecution } from '@/types';
 
 interface TicketDetailViewProps {
@@ -136,6 +137,14 @@ export function TicketDetailView({ ticketNumber }: TicketDetailViewProps) {
       />
 
       {activeExecution && <AgentResultCard execution={activeExecution} />}
+
+      {activeExecution && activeExecution.traces && activeExecution.traces.length > 0 && (
+        <ExecutionTraceTimeline
+          traces={activeExecution.traces}
+          startedAt={activeExecution.startedAt}
+          completedAt={activeExecution.completedAt}
+        />
+      )}
 
       <Card>
         <CardHeader className="pb-3">

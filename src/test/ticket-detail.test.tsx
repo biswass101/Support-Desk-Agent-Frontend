@@ -147,4 +147,56 @@ describe('TicketDetailView Component', () => {
     expect(screen.getByText(/agent processing\.\.\./i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /agent processing\.\.\./i })).toBeDisabled();
   });
+
+  it('renders execution result and trace timeline when execution data is available', () => {
+    vi.spyOn(ticketHooks, 'useTicketDetail').mockReturnValue({
+      data: mockTicket,
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
+    } as unknown as ReturnType<typeof ticketHooks.useTicketDetail>);
+
+    vi.spyOn(executionHooks, 'useTicketExecutions').mockReturnValue({
+      data: [{ id: 'exec-101', status: 'COMPLETED' }],
+      isLoading: false,
+      isError: false,
+    } as unknown as ReturnType<typeof executionHooks.useTicketExecutions>);
+
+    vi.spyOn(executionHooks, 'useExecutionDetail').mockReturnValue({
+      data: {
+        id: 'exec-101',
+        ticketId: 'ticket-101',
+        status: 'COMPLETED',
+        resolutionTag: 'AUTO_RESOLVE',
+        customerResponse: 'Your order has been shipped.',
+        summary: 'Looked up order status.',
+        errorMessage: null,
+        startedAt: '2026-11-02T10:00:00Z',
+        completedAt: '2026-11-02T10:00:03Z',
+        createdAt: '2026-11-02T10:00:00Z',
+        ticket: mockTicket,
+        traces: [
+          {
+            id: 't-1',
+            executionId: 'exec-101',
+            step: 1,
+            eventType: 'AGENT_DECISION',
+            toolName: null,
+            message: 'Checking order details.',
+            parameters: null,
+            output: null,
+            durationMs: 50,
+            createdAt: '2026-11-02T10:00:01Z',
+          },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+    } as unknown as ReturnType<typeof executionHooks.useExecutionDetail>);
+
+    render(<TicketDetailView ticketNumber="TCK-001" />);
+    expect(screen.getByText('Customer Response Draft')).toBeInTheDocument();
+    expect(screen.getByText('Autonomous Execution Trace')).toBeInTheDocument();
+    expect(screen.getByText('Checking order details.')).toBeInTheDocument();
+  });
 });
