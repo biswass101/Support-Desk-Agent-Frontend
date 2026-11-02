@@ -100,7 +100,7 @@ describe('ExecutionDetailPage Component', () => {
     expect(screen.getByText('Audit #exec-123')).toBeInTheDocument();
     expect(screen.getAllByText(/TCK-001/).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Customer Response Draft')).toBeInTheDocument();
-    expect(screen.getByText('Autonomous Execution Trace')).toBeInTheDocument();
+    expect(screen.getByText('Agent Execution Trace')).toBeInTheDocument();
     expect(screen.getByText('Looking up order')).toBeInTheDocument();
   });
 });

@@ -40,9 +40,8 @@ const navItems: NavItem[] = [
   },
   {
     label: 'Settings',
-    href: '#',
+    href: '/settings',
     icon: Settings,
-    disabled: true,
   },
 ];
 

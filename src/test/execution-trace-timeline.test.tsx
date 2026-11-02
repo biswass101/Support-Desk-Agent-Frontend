@@ -65,7 +65,7 @@ describe('ExecutionTraceTimeline Component', () => {
       />
     );
 
-    expect(screen.getByText('Autonomous Execution Trace')).toBeInTheDocument();
+    expect(screen.getByText('Agent Execution Trace')).toBeInTheDocument();
     expect(screen.getByText('4 Steps')).toBeInTheDocument();
     expect(screen.getByText('1 Tool Invocation')).toBeInTheDocument();
 

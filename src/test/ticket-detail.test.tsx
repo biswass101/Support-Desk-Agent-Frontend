@@ -196,7 +196,7 @@ describe('TicketDetailView Component', () => {
 
     render(<TicketDetailView ticketNumber="TCK-001" />);
     expect(screen.getByText('Customer Response Draft')).toBeInTheDocument();
-    expect(screen.getByText('Autonomous Execution Trace')).toBeInTheDocument();
+    expect(screen.getByText('Agent Execution Trace')).toBeInTheDocument();
     expect(screen.getByText('Checking order details.')).toBeInTheDocument();
   });
 });

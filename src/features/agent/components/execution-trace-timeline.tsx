@@ -115,7 +115,7 @@ export function ExecutionTraceTimeline({
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4 text-primary" />
               <CardTitle className="text-sm font-semibold tracking-tight">
-                Autonomous Execution Trace
+                Agent Execution Trace
               </CardTitle>
             </div>
             <p className="text-xs text-muted-foreground">
