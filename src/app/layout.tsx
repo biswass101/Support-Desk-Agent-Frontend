@@ -6,10 +6,8 @@ export const metadata: Metadata = {
   title: 'SupportDesk Agent — Autonomous AI Support Dashboard',
   description: 'AI-powered customer support ticket triage operations platform',
   icons: {
-    icon: [
-      { url: '/chatbot.png' },
-      { url: '/favicon.ico' },
-    ],
+    icon: '/chatbot.png',
+    shortcut: '/favicon.ico',
     apple: '/chatbot.png',
   },
 };
