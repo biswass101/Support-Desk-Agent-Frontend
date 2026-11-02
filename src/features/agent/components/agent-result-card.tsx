@@ -15,13 +15,15 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { AgentExecution } from '@/types';
 import { ResolutionTagBadge } from './resolution-tag-badge';
+import { TypewriterText } from './typewriter-text';
 import { toast } from 'sonner';
 
 interface AgentResultCardProps {
   execution: AgentExecution;
+  animateDraft?: boolean;
 }
 
-export function AgentResultCard({ execution }: AgentResultCardProps) {
+export function AgentResultCard({ execution, animateDraft = false }: AgentResultCardProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -130,7 +132,13 @@ export function AgentResultCard({ execution }: AgentResultCardProps) {
           </div>
 
           <div className="rounded-xl border bg-muted/20 p-5 text-sm sm:text-base leading-relaxed text-foreground font-normal whitespace-pre-wrap selection:bg-primary/20">
-            {execution.customerResponse || (
+            {execution.customerResponse ? (
+              <TypewriterText
+                text={execution.customerResponse}
+                active={animateDraft}
+                speedMs={8}
+              />
+            ) : (
               <span className="text-muted-foreground italic">
                 No customer response text generated.
               </span>

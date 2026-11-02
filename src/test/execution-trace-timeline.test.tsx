@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ExecutionTraceTimeline } from '@/features/agent/components/execution-trace-timeline';
 import { ExecutionTrace } from '@/types';
 
@@ -142,6 +142,22 @@ describe('ExecutionTraceTimeline Component', () => {
     expect(
       screen.getByText('No execution trace steps recorded for this session.')
     ).toBeInTheDocument();
+  });
+
+  it('renders replay button and handles skip to end during active animation', () => {
+    render(
+      <ExecutionTraceTimeline
+        traces={mockTraces}
+        autoAnimate={true}
+      />
+    );
+
+    const skipButton = screen.getByRole('button', { name: /skip to end/i });
+    expect(skipButton).toBeInTheDocument();
+    fireEvent.click(skipButton);
+
+    expect(screen.getByRole('button', { name: /replay trace/i })).toBeInTheDocument();
+    expect(screen.getByText('4 Steps')).toBeInTheDocument();
   });
 });
 

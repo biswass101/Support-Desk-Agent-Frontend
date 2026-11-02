@@ -162,15 +162,17 @@ export default function ExecutionDetailPage() {
         </Card>
       )}
 
-      <AgentResultCard execution={execution} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <AgentResultCard execution={execution} />
 
-      {execution.traces && execution.traces.length > 0 && (
-        <ExecutionTraceTimeline
-          traces={execution.traces}
-          startedAt={execution.startedAt}
-          completedAt={execution.completedAt}
-        />
-      )}
+        {execution.traces && execution.traces.length > 0 && (
+          <ExecutionTraceTimeline
+            traces={execution.traces}
+            startedAt={execution.startedAt}
+            completedAt={execution.completedAt}
+          />
+        )}
+      </div>
     </div>
     </DashboardShell>
   );

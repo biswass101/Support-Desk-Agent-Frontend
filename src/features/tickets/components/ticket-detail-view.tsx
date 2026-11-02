@@ -8,9 +8,12 @@ import {
   Calendar,
   Clock,
   MessageSquare,
+  Brain,
+  Loader2,
 } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { useTicketDetail } from '../hooks/use-tickets';
@@ -31,6 +34,8 @@ interface TicketDetailViewProps {
 export function TicketDetailView({ ticketNumber }: TicketDetailViewProps) {
   const [latestTriageResult, setLatestTriageResult] = useState<AgentExecution | null>(null);
   const [selectedExecutionId, setSelectedExecutionId] = useState<string | null>(null);
+  const [isFreshRun, setIsFreshRun] = useState(false);
+  const [isLiveProcessing, setIsLiveProcessing] = useState(false);
   const { data: ticket, isLoading, isError, refetch } = useTicketDetail(ticketNumber);
   const { data: executionsList = [] } = useTicketExecutions(ticketNumber);
 
@@ -140,49 +145,134 @@ export function TicketDetailView({ ticketNumber }: TicketDetailViewProps) {
 
       <AgentActionBar
         ticket={ticket}
+        onExecutionStart={() => setIsLiveProcessing(true)}
         onExecutionComplete={(exec) => {
+          setIsLiveProcessing(false);
+          setIsFreshRun(true);
           setLatestTriageResult(exec);
           setSelectedExecutionId(exec.id);
           refetch();
         }}
       />
 
-      {activeExecution && <AgentResultCard execution={activeExecution} />}
-
-      {activeExecution && activeExecution.traces && activeExecution.traces.length > 0 && (
-        <ExecutionTraceTimeline
-          traces={activeExecution.traces}
-          startedAt={activeExecution.startedAt}
-          completedAt={activeExecution.completedAt}
-        />
+      {isLiveProcessing && (
+        <Card className="border-primary/40 bg-card shadow-sm overflow-hidden animate-in fade-in duration-300">
+          <CardHeader className="border-b bg-muted/20 pb-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Brain className="h-4 w-4 text-primary animate-pulse" />
+                <CardTitle className="text-sm font-semibold tracking-tight">
+                  Autonomous Agent Reasoning
+                </CardTitle>
+              </div>
+              <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/30 animate-pulse font-medium">
+                Gemini Multi-Turn Calling
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="p-5">
+            <div className="flex items-center gap-3">
+              <Loader2 className="h-5 w-5 animate-spin text-primary shrink-0" />
+              <div className="space-y-1">
+                <p className="text-xs font-medium text-foreground">
+                  Evaluating customer context and querying backend tools...
+                </p>
+                <p className="text-[11px] text-muted-foreground">
+                  Analyzing inquiry intent, checking order and tier eligibility, and synthesizing resolution.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       )}
 
-      {executionsList.length > 0 && (
-        <ExecutionHistoryList
-          executions={executionsList}
-          selectedExecutionId={activeExecution?.id}
-          onSelectExecution={(id) => setSelectedExecutionId(id)}
-        />
-      )}
+      {activeExecution ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+          <div className="space-y-6">
+            <AgentResultCard
+              execution={activeExecution}
+              animateDraft={isFreshRun}
+            />
 
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <MessageSquare className="h-4 w-4 text-primary" />
-              <span>Customer Message</span>
-            </CardTitle>
-            <span className="text-[11px] font-mono text-muted-foreground">
-              Ticket ID: {ticket.id.slice(0, 8)}...
-            </span>
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                    <MessageSquare className="h-4 w-4 text-primary" />
+                    <span>Customer Message</span>
+                  </CardTitle>
+                  <span className="text-[11px] font-mono text-muted-foreground">
+                    Ticket ID: {ticket.id.slice(0, 8)}...
+                  </span>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-lg bg-muted/40 p-4 border text-sm leading-relaxed text-foreground font-medium">
+                  &ldquo;{ticket.message}&rdquo;
+                </div>
+              </CardContent>
+            </Card>
+
+            {executionsList.length > 0 && (
+              <ExecutionHistoryList
+                executions={executionsList}
+                selectedExecutionId={activeExecution?.id}
+                onSelectExecution={(id) => {
+                  setSelectedExecutionId(id);
+                  setIsFreshRun(false);
+                }}
+              />
+            )}
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="rounded-lg bg-muted/40 p-4 border text-sm leading-relaxed text-foreground font-medium">
-            &ldquo;{ticket.message}&rdquo;
+
+          <div className="h-[600px] lg:h-full lg:relative">
+            {activeExecution.traces && activeExecution.traces.length > 0 && (
+              <div className="h-full lg:absolute lg:inset-0">
+                <ExecutionTraceTimeline
+                  traces={activeExecution.traces}
+                  startedAt={activeExecution.startedAt}
+                  completedAt={activeExecution.completedAt}
+                  autoAnimate={isFreshRun}
+                  onAnimationComplete={() => setIsFreshRun(false)}
+                  className="h-full"
+                />
+              </div>
+            )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      ) : (
+        <>
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                  <MessageSquare className="h-4 w-4 text-primary" />
+                  <span>Customer Message</span>
+                </CardTitle>
+                <span className="text-[11px] font-mono text-muted-foreground">
+                  Ticket ID: {ticket.id.slice(0, 8)}...
+                </span>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-lg bg-muted/40 p-4 border text-sm leading-relaxed text-foreground font-medium">
+                &ldquo;{ticket.message}&rdquo;
+              </div>
+            </CardContent>
+          </Card>
+
+          {executionsList.length > 0 && (
+            <ExecutionHistoryList
+              executions={executionsList}
+              selectedExecutionId={selectedExecutionId || undefined}
+              onSelectExecution={(id) => {
+                setSelectedExecutionId(id);
+                setIsFreshRun(false);
+              }}
+            />
+          )}
+        </>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <CustomerInfoCard customer={ticket.customer} />

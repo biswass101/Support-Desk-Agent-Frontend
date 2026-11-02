@@ -9,11 +9,13 @@ import { useTriageTicket } from '@/features/agent/hooks/use-triage';
 
 interface AgentActionBarProps {
   ticket: Ticket;
+  onExecutionStart?: () => void;
   onExecutionComplete?: (execution: AgentExecution) => void;
 }
 
 export function AgentActionBar({
   ticket,
+  onExecutionStart,
   onExecutionComplete,
 }: AgentActionBarProps) {
   const { mutate: runTriage, isPending, isError, error } = useTriageTicket(
@@ -29,6 +31,7 @@ export function AgentActionBar({
 
   const handleClick = () => {
     if (isProcessing) return;
+    onExecutionStart?.();
     runTriage();
   };
 
