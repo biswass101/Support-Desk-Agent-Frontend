@@ -47,7 +47,7 @@ export function useReseedDatabase() {
       queryClient.invalidateQueries({ queryKey: ['all-executions'] });
       queryClient.invalidateQueries({ queryKey: ['ticket-executions'] });
       queryClient.invalidateQueries({ queryKey: ['execution-detail'] });
-      toast.success(data.message || 'Evaluation dataset re-seeded successfully.');
+      toast.success(data.message || 'Sample dataset restored successfully.');
     },
     onError: (err) => {
       toast.error(err.message || 'Failed to re-seed database.');

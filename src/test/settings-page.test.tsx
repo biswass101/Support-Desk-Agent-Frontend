@@ -52,7 +52,7 @@ describe('SettingsPage Component', () => {
     } as unknown as ReturnType<typeof settingsHooks.useClearAllData>);
   });
 
-  it('renders system metadata and reviewer controls', () => {
+  it('renders system metadata and database controls', () => {
     vi.spyOn(settingsHooks, 'useSystemInfo').mockReturnValue({
       data: mockSystemInfo,
       isLoading: false,
@@ -62,11 +62,11 @@ describe('SettingsPage Component', () => {
 
     render(<SettingsPage />);
 
-    expect(screen.getByText('System Settings & Evaluation Controls')).toBeInTheDocument();
+    expect(screen.getByText('System Settings & Operations')).toBeInTheDocument();
     expect(screen.getByText('gemini-3.5-flash-lite')).toBeInTheDocument();
     expect(screen.getByText('Database Connected')).toBeInTheDocument();
-    expect(screen.getByText('Reset Tickets to Pending (Reviewer Mode)')).toBeInTheDocument();
-    expect(screen.getByText('Re-Seed Evaluation Dataset')).toBeInTheDocument();
+    expect(screen.getByText('Reset Tickets to Pending')).toBeInTheDocument();
+    expect(screen.getAllByText('Restore Sample Dataset').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Clear All Database Records')).toBeInTheDocument();
   });
 
@@ -84,7 +84,7 @@ describe('SettingsPage Component', () => {
     fireEvent.click(resetBtn);
     expect(mockResetMutate).toHaveBeenCalledTimes(1);
 
-    const reseedBtn = screen.getByRole('button', { name: /re-seed default tickets/i });
+    const reseedBtn = screen.getByRole('button', { name: /restore sample dataset/i });
     fireEvent.click(reseedBtn);
     expect(mockReseedMutate).toHaveBeenCalledTimes(1);
 

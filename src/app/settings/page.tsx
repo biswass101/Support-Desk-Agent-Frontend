@@ -60,11 +60,11 @@ export default function SettingsPage() {
           <div className="flex items-center gap-2">
             <Settings className="h-5 w-5 text-primary" />
             <h1 className="text-xl font-bold tracking-tight text-foreground">
-              System Settings &amp; Evaluation Controls
+              System Settings &amp; Operations
             </h1>
           </div>
           <p className="text-xs text-muted-foreground">
-            Monitor environment configurations, active LLM model parameters, and manage evaluator database states.
+            Monitor environment configurations, active LLM model parameters, and manage database operations.
           </p>
         </div>
       </div>
@@ -200,11 +200,11 @@ export default function SettingsPage() {
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" />
             <CardTitle className="text-sm font-semibold tracking-tight">
-              Reviewer &amp; Evaluator Data Controls
+              Database Maintenance &amp; Data Operations
             </CardTitle>
           </div>
           <p className="text-xs text-muted-foreground">
-            Interactive database operations designed to allow evaluators to test AI triage workflows repeatedly from clean states.
+            Administrative operations to reset ticket workflow states, restore sample datasets, or purge database records.
           </p>
         </CardHeader>
 
@@ -213,14 +213,14 @@ export default function SettingsPage() {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <h4 className="text-sm font-semibold text-foreground">
-                  Reset Tickets to Pending (Reviewer Mode)
+                  Reset Tickets to Pending
                 </h4>
                 <Badge variant="secondary" className="text-[10px]">
-                  Recommended for Evaluation
+                  Workflow Reset
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground max-w-xl">
-                Clears all previous agent execution traces and resets all tickets (TCK-001, TCK-002, TCK-003) to PENDING status so you can re-trigger and evaluate the AI triage agent live.
+                Clears all previous agent execution traces and resets all support tickets to PENDING status to allow fresh autonomous triage processing.
               </p>
             </div>
 
@@ -249,14 +249,14 @@ export default function SettingsPage() {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <h4 className="text-sm font-semibold text-foreground">
-                  Re-Seed Evaluation Dataset
+                  Restore Sample Dataset
                 </h4>
                 <Badge variant="outline" className="text-[10px]">
-                  Official PDF Seed Data
+                  Sample Support Data
                 </Badge>
               </div>
               <p className="text-xs text-muted-foreground max-w-xl">
-                Recreates the exact evaluation tickets specified in the assignment: TCK-001 (order inquiry), TCK-002 (tier upgrade), and TCK-003 (profile picture FAQ).
+                Populates sample customer records and benchmark tickets: TCK-001 (order inquiry), TCK-002 (tier upgrade), and TCK-003 (profile picture FAQ).
               </p>
             </div>
 
@@ -270,12 +270,12 @@ export default function SettingsPage() {
               {reseedMutation.isPending ? (
                 <>
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  <span>Seeding...</span>
+                  <span>Restoring...</span>
                 </>
               ) : (
                 <>
                   <Database className="h-3.5 w-3.5 text-primary" />
-                  <span>Re-Seed Default Tickets</span>
+                  <span>Restore Sample Dataset</span>
                 </>
               )}
             </Button>
@@ -287,7 +287,7 @@ export default function SettingsPage() {
                 Clear All Database Records
               </h4>
               <p className="text-xs text-muted-foreground max-w-xl">
-                Wipes all tickets, customers, and execution traces from the database. Useful for verifying zero-data empty states across the application.
+                Permanently deletes all tickets, customers, and execution traces from the database to start with a clean empty state.
               </p>
             </div>
 
