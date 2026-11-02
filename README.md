@@ -6,6 +6,29 @@ The dashboard connects to the SupportDesk Agent Express backend to inspect suppo
 
 ---
 
+## Table of Contents
+
+- [Architecture and Design Decisions](#architecture-and-design-decisions)
+  - [1. Next.js 15 App Router Architecture](#1-nextjs-15-app-router-architecture)
+  - [2. State Management Strategy](#2-state-management-strategy)
+  - [3. Component Organization](#3-component-organization)
+  - [4. Dark Mode and System Theming](#4-dark-mode-and-system-theming)
+  - [5. Interactive Trace Streaming and Balanced Ticket Layout](#5-interactive-trace-streaming-and-balanced-ticket-layout)
+  - [6. Fixed Full-Height Navigation and Shell](#6-fixed-full-height-navigation-and-shell)
+  - [7. System Maintenance Operations](#7-system-maintenance-operations)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Available Scripts](#available-scripts)
+- [Running Alongside the Express Backend](#running-alongside-the-express-backend)
+- [Seeded Ticket Evaluation Scenarios](#seeded-ticket-evaluation-scenarios)
+  - [Scenario 1: Order Status Lookup (TCK-001)](#scenario-1-order-status-lookup-tck-001)
+  - [Scenario 2: Tier Upgrade Inquiry (TCK-002)](#scenario-2-tier-upgrade-inquiry-tck-002)
+  - [Scenario 3: General FAQ Inquiry (TCK-003)](#scenario-3-general-faq-inquiry-tck-003)
+- [Assumptions and Trade-Offs](#assumptions-and-trade-offs)
+
+---
+
 ## Architecture and Design Decisions
 
 ### 1. Next.js 15 App Router Architecture
@@ -207,21 +230,21 @@ Frontend will start on `http://localhost:3000`.
 
 The system is pre-seeded with three representative tickets to demonstrate autonomous agent triage behavior:
 
-### Scenario 1: Order Status Lookup (`TCK-001`)
+### Scenario 1: Order Status Lookup (TCK-001)
 - **Message**: "Where is my package #ORD-9012? It was supposed to arrive yesterday."
 - **Customer**: USR-101 (Free tier)
 - **Agent Behavior**: The agent detects order ID `ORD-9012` and calls `get_order_status(ORD-9012)`.
 - **Classification**: `AUTO_RESOLVE`.
 - **Response**: Explains package transit status directly to the customer.
 
-### Scenario 2: Tier Upgrade Inquiry (`TCK-002`)
+### Scenario 2: Tier Upgrade Inquiry (TCK-002)
 - **Message**: "Can you upgrade my account to Enterprise tier?"
 - **Customer**: USR-204 (Free tier)
 - **Agent Behavior**: The agent detects an upgrade request and calls `get_user_tier(USR-204)`.
 - **Classification**: `ESCALATE_TO_SALES`.
 - **Response**: Informs the customer that their request has been routed to the sales team.
 
-### Scenario 3: General FAQ Inquiry (`TCK-003`)
+### Scenario 3: General FAQ Inquiry (TCK-003)
 - **Message**: "How do I update my profile picture?"
 - **Customer**: USR-309 (Free tier)
 - **Agent Behavior**: The agent determines this is a general inquiry requiring zero tool calls.
