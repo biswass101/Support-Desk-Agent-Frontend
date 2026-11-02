@@ -4,6 +4,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { TicketDetailView } from '@/features/tickets/components/ticket-detail-view';
 import * as ticketHooks from '@/features/tickets/hooks/use-tickets';
 import * as triageHooks from '@/features/agent/hooks/use-triage';
+import * as executionHooks from '@/features/agent/hooks/use-executions';
 import { TicketDetail } from '@/types';
 
 vi.mock('@/features/tickets/hooks/use-tickets', () => ({
@@ -13,6 +14,11 @@ vi.mock('@/features/tickets/hooks/use-tickets', () => ({
 
 vi.mock('@/features/agent/hooks/use-triage', () => ({
   useTriageTicket: vi.fn(),
+}));
+
+vi.mock('@/features/agent/hooks/use-executions', () => ({
+  useTicketExecutions: vi.fn(),
+  useExecutionDetail: vi.fn(),
 }));
 
 describe('TicketDetailView Component', () => {
@@ -44,6 +50,18 @@ describe('TicketDetailView Component', () => {
       isError: false,
       error: null,
     } as unknown as ReturnType<typeof triageHooks.useTriageTicket>);
+
+    vi.spyOn(executionHooks, 'useTicketExecutions').mockReturnValue({
+      data: [],
+      isLoading: false,
+      isError: false,
+    } as unknown as ReturnType<typeof executionHooks.useTicketExecutions>);
+
+    vi.spyOn(executionHooks, 'useExecutionDetail').mockReturnValue({
+      data: null,
+      isLoading: false,
+      isError: false,
+    } as unknown as ReturnType<typeof executionHooks.useExecutionDetail>);
   });
 
   it('renders loading state when fetching ticket details', () => {

@@ -4,12 +4,12 @@ import React from 'react';
 import { Bot, Loader2, Sparkles, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Ticket } from '@/types';
+import { Ticket, AgentExecution } from '@/types';
 import { useTriageTicket } from '@/features/agent/hooks/use-triage';
 
 interface AgentActionBarProps {
   ticket: Ticket;
-  onExecutionComplete?: () => void;
+  onExecutionComplete?: (execution: AgentExecution) => void;
 }
 
 export function AgentActionBar({
@@ -19,8 +19,8 @@ export function AgentActionBar({
   const { mutate: runTriage, isPending, isError, error } = useTriageTicket(
     ticket.ticketNumber,
     {
-      onSuccess: () => {
-        onExecutionComplete?.();
+      onSuccess: (data) => {
+        onExecutionComplete?.(data);
       },
     }
   );

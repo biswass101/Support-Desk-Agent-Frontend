@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import {
@@ -14,17 +14,29 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { useTicketDetail } from '../hooks/use-tickets';
+import { useTicketExecutions, useExecutionDetail } from '@/features/agent/hooks/use-executions';
 import { TicketStatusBadge } from './ticket-status-badge';
 import { CustomerInfoCard } from './customer-info-card';
 import { OrderInfoCard } from './order-info-card';
 import { AgentActionBar } from './agent-action-bar';
+import { AgentResultCard } from '@/features/agent/components/agent-result-card';
+import { AgentExecution } from '@/types';
 
 interface TicketDetailViewProps {
   ticketNumber: string;
 }
 
 export function TicketDetailView({ ticketNumber }: TicketDetailViewProps) {
+  const [latestTriageResult, setLatestTriageResult] = useState<AgentExecution | null>(null);
   const { data: ticket, isLoading, isError, refetch } = useTicketDetail(ticketNumber);
+  const { data: executionsList } = useTicketExecutions(ticketNumber);
+
+  const latestExecutionId = executionsList && executionsList.length > 0 ? executionsList[0].id : null;
+  const { data: fetchedExecution } = useExecutionDetail(
+    !latestTriageResult ? latestExecutionId : null
+  );
+
+  const activeExecution = latestTriageResult || fetchedExecution;
 
   if (isLoading) {
     return (
@@ -115,7 +127,15 @@ export function TicketDetailView({ ticketNumber }: TicketDetailViewProps) {
         </div>
       </div>
 
-      <AgentActionBar ticket={ticket} onExecutionComplete={() => refetch()} />
+      <AgentActionBar
+        ticket={ticket}
+        onExecutionComplete={(exec) => {
+          setLatestTriageResult(exec);
+          refetch();
+        }}
+      />
+
+      {activeExecution && <AgentResultCard execution={activeExecution} />}
 
       <Card>
         <CardHeader className="pb-3">
