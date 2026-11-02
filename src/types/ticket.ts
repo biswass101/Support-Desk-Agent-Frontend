@@ -1,4 +1,5 @@
 import { Customer } from './customer';
+import { ExecutionTrace } from './agent';
 
 export type TicketStatus = 'PENDING' | 'PROCESSING' | 'RESOLVED' | 'FAILED';
 
@@ -29,6 +30,7 @@ export interface AgentExecutionSummary {
   startedAt: string;
   completedAt: string | null;
   createdAt: string;
+  traces?: ExecutionTrace[];
 }
 
 export interface TicketFilters {

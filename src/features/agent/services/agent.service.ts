@@ -25,3 +25,8 @@ export async function fetchExecutionDetail(
   );
   return response.data.data;
 }
+
+export async function fetchAllExecutions(): Promise<AgentExecution[]> {
+  const response = await apiClient.get<ApiResponse<AgentExecution[]>>('/executions');
+  return response.data.data;
+}

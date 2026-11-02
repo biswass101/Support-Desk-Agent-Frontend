@@ -1,5 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchTicketExecutions, fetchExecutionDetail } from '../services/agent.service';
+import {
+  fetchTicketExecutions,
+  fetchExecutionDetail,
+  fetchAllExecutions,
+} from '../services/agent.service';
 
 export function useTicketExecutions(ticketNumber: string) {
   return useQuery({
@@ -14,5 +18,12 @@ export function useExecutionDetail(executionId: string | null) {
     queryKey: ['execution-detail', executionId],
     queryFn: () => (executionId ? fetchExecutionDetail(executionId) : null),
     enabled: Boolean(executionId),
+  });
+}
+
+export function useAllExecutions() {
+  return useQuery({
+    queryKey: ['all-executions'],
+    queryFn: () => fetchAllExecutions(),
   });
 }

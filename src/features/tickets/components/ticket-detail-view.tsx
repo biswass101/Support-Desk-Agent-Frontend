@@ -21,6 +21,7 @@ import { OrderInfoCard } from './order-info-card';
 import { AgentActionBar } from './agent-action-bar';
 import { AgentResultCard } from '@/features/agent/components/agent-result-card';
 import { ExecutionTraceTimeline } from '@/features/agent/components/execution-trace-timeline';
+import { ExecutionHistoryList } from '@/features/executions/components/execution-history-list';
 import { AgentExecution } from '@/types';
 
 interface TicketDetailViewProps {
@@ -29,15 +30,24 @@ interface TicketDetailViewProps {
 
 export function TicketDetailView({ ticketNumber }: TicketDetailViewProps) {
   const [latestTriageResult, setLatestTriageResult] = useState<AgentExecution | null>(null);
+  const [selectedExecutionId, setSelectedExecutionId] = useState<string | null>(null);
   const { data: ticket, isLoading, isError, refetch } = useTicketDetail(ticketNumber);
-  const { data: executionsList } = useTicketExecutions(ticketNumber);
+  const { data: executionsList = [] } = useTicketExecutions(ticketNumber);
 
-  const latestExecutionId = executionsList && executionsList.length > 0 ? executionsList[0].id : null;
+  const activeExecutionId =
+    selectedExecutionId ||
+    (latestTriageResult ? latestTriageResult.id : (executionsList.length > 0 ? executionsList[0].id : null));
+
   const { data: fetchedExecution } = useExecutionDetail(
-    !latestTriageResult ? latestExecutionId : null
+    !latestTriageResult || (selectedExecutionId && selectedExecutionId !== latestTriageResult?.id)
+      ? activeExecutionId
+      : null
   );
 
-  const activeExecution = latestTriageResult || fetchedExecution;
+  const activeExecution =
+    selectedExecutionId && fetchedExecution?.id === selectedExecutionId
+      ? fetchedExecution
+      : (latestTriageResult || fetchedExecution);
 
   if (isLoading) {
     return (
@@ -132,6 +142,7 @@ export function TicketDetailView({ ticketNumber }: TicketDetailViewProps) {
         ticket={ticket}
         onExecutionComplete={(exec) => {
           setLatestTriageResult(exec);
+          setSelectedExecutionId(exec.id);
           refetch();
         }}
       />
@@ -143,6 +154,14 @@ export function TicketDetailView({ ticketNumber }: TicketDetailViewProps) {
           traces={activeExecution.traces}
           startedAt={activeExecution.startedAt}
           completedAt={activeExecution.completedAt}
+        />
+      )}
+
+      {executionsList.length > 0 && (
+        <ExecutionHistoryList
+          executions={executionsList}
+          selectedExecutionId={activeExecution?.id}
+          onSelectExecution={(id) => setSelectedExecutionId(id)}
         />
       )}
 
