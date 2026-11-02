@@ -172,7 +172,7 @@ frontend/
 ### Installation
 1. Install project dependencies:
    ```bash
-   cd frontend
+   cd Support-Desk-Agent-Frontend
    npm install
    ```
 
