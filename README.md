@@ -53,7 +53,7 @@ The dashboard connects to the SupportDesk Agent Express backend to inspect suppo
 
 ### 3. Component Organization
 ```
-frontend/
+Support-Desk-Agent-Frontend/
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx
