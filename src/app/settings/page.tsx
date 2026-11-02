@@ -14,11 +14,13 @@ import {
   Layers,
   Users,
   Ticket,
+  Sun,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ThemeToggle } from '@/components/theme-toggle';
 import {
   useSystemInfo,
   useResetToPending,
@@ -68,6 +70,35 @@ export default function SettingsPage() {
           </p>
         </div>
       </div>
+
+      <Card className="shadow-sm">
+        <CardHeader className="pb-3 border-b bg-muted/20">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Sun className="h-4 w-4 text-primary" />
+              <CardTitle className="text-sm font-semibold tracking-tight">
+                Appearance &amp; Theme
+              </CardTitle>
+            </div>
+            <span className="text-xs text-muted-foreground font-mono">
+              System Display
+            </span>
+          </div>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-foreground">
+                Color Theme
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Select your preferred interface color mode or synchronize with your operating system.
+              </p>
+            </div>
+            <ThemeToggle variant="segmented" />
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="shadow-sm">
         <CardHeader className="pb-3 border-b bg-muted/20">

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { cn } from '@/lib/utils';
 import { useUiStore } from '@/stores/ui-store';
 import { useTickets } from '@/features/tickets/hooks/use-tickets';
@@ -103,6 +104,7 @@ export function Header({ title, customBreadcrumbs }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         <Button
           variant="outline"
           size="sm"

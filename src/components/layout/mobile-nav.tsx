@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Ticket,
   Activity,
+  Settings,
   Bot,
   X,
   Server,
@@ -28,6 +29,7 @@ export function MobileNav() {
     { label: 'Dashboard', href: '/', icon: LayoutDashboard },
     { label: 'All Tickets', href: '/tickets', icon: Ticket },
     { label: 'Agent Activity', href: '/activity', icon: Activity },
+    { label: 'Settings', href: '/settings', icon: Settings },
   ];
 
   return (
