@@ -206,7 +206,7 @@ For full end-to-end operation, run the backend and frontend simultaneously:
 
 ### Terminal 1: Backend
 ```bash
-cd backend
+cd Support-Desk-Agent-Backend
 npm install
 docker compose up -d
 npm run prisma:generate
@@ -218,7 +218,7 @@ Backend will start on `http://localhost:5000`. Swagger API documentation is avai
 
 ### Terminal 2: Frontend
 ```bash
-cd frontend
+cd Support-Desk-Agent-Frontend
 npm install
 npm run dev
 ```
